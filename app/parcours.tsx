@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Animated } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Image, ScrollView, Animated, Modal, ImageSourcePropType } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function ExploreScreen() {
   const router = useRouter();
   const fadeAnim = useState(new Animated.Value(0))[0];
+  const [selectedImage, setSelectedImage] = useState<ImageSourcePropType | null>(null);
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -15,8 +16,8 @@ export default function ExploreScreen() {
     }).start();
   }, []);
 
-  // Liste des projets
-  const projects = [
+  // Liste des projets avec typage correct
+  const projects: { image: ImageSourcePropType; title: string; description: string }[] = [
     {
       image: require("../assets/images/project1.png"),
       title: "Modernisation d’un site e-commerce",
@@ -34,13 +35,15 @@ export default function ExploreScreen() {
     },
   ];
 
-  // Événements de la timeline
-  const timelineEvents = [
-    { year: "2018", title: "Création de BuildCorp", description: "Naissance de BuildCorp avec une vision d'innovation technologique." },
-    { year: "2020", title: "Premier Grand Projet", description: "Nous avons collaboré avec une startup pour développer une plateforme SaaS." },
-    { year: "2022", title: "Expansion Internationale", description: "Ouverture de notre premier bureau à l'étranger et croissance de notre équipe." },
-    { year: "2024", title: "Innovation & IA", description: "Intégration de l'Intelligence Artificielle dans nos solutions pour optimiser les performances." },
-  ];
+  // Afficher l'aperçu de l'image
+  const openPreview = (image: ImageSourcePropType) => {
+    setSelectedImage(image);
+  };
+
+  // Fermer l'aperçu
+  const closePreview = () => {
+    setSelectedImage(null);
+  };
 
   return (
     <LinearGradient colors={["#0a192f", "#000"]} style={styles.gradientContainer}>
@@ -57,39 +60,26 @@ export default function ExploreScreen() {
             data={projects}
             keyExtractor={(_, index) => index.toString()}
             renderItem={({ item }) => (
-              <View style={styles.projectCard}>
-                <Image source={item.image} style={styles.projectImage} />
-                <View style={styles.projectDetails}>
-                  <Text style={styles.projectTitle}>{item.title}</Text>
-                  <Text style={styles.projectDescription}>{item.description}</Text>
+              <TouchableOpacity onPress={() => openPreview(item.image)}>
+                <View style={styles.projectCard}>
+                  <Image source={item.image} style={styles.projectImage} />
+                  <View style={styles.projectDetails}>
+                    <Text style={styles.projectTitle}>{item.title}</Text>
+                    <Text style={styles.projectDescription}>{item.description}</Text>
+                  </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
             scrollEnabled={false}
           />
 
-          {/* Section Timeline */}
-          <View style={styles.timelineSection}>
-            <Text style={styles.timelineTitle}>L'Évolution de BuildCorp</Text>
-            <View style={styles.timeline}>
-              <FlatList
-                data={timelineEvents}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item, index }) => (
-                  <View style={styles.timelineItem}>
-                    <View style={styles.timelineLine} />
-                    <View style={[styles.timelineContent, index % 2 === 0 ? styles.alignLeft : styles.alignRight]}>
-                      <Text style={styles.timelineYear}>{item.year}</Text>
-                      <Text style={styles.timelineEvent}>{item.title}</Text>
-                      <Text style={styles.timelineDescription}>{item.description}</Text>
-                    </View>
-                  </View>
-                )}
-                scrollEnabled={false}
-                ListFooterComponent={<View style={{ height: 50 }} />}
-              />
-            </View>
-          </View>
+          {/* Aperçu d'image */}
+          <Modal visible={selectedImage !== null} transparent animationType="fade">
+            <TouchableOpacity style={styles.modalContainer} onPress={closePreview}>
+              {selectedImage && <Image source={selectedImage} style={styles.fullImage} />}
+            </TouchableOpacity>
+          </Modal>
+
         </View>
       </ScrollView>
     </LinearGradient>
@@ -150,70 +140,16 @@ const styles = StyleSheet.create({
     color: "#AAA",
     marginBottom: 10,
   },
-  // Timeline
-  timelineSection: {
-    paddingVertical: 50,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+  // Aperçu d'image
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.8)",
+    justifyContent: "center",
     alignItems: "center",
-    marginTop: 30,
-    width: "100%",
-    borderRadius: 20,
   },
-  timelineTitle: {
-    fontSize: 30,
-    fontWeight: "bold",
-    color: "white",
-    textAlign: "center",
-    marginBottom: 30,
-  },
-  timeline: {
+  fullImage: {
     width: "90%",
-    position: "relative",
-  },
-  timelineItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 15,
-  },
-  timelineLine: {
-    width: 4,
-    height: "100%",
-    backgroundColor: "#5da9e9",
-    position: "absolute",
-    left: "50%",
-    transform: [{ translateX: -2 }],
-  },
-  timelineContent: {
-    width: "50%",
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    padding: 20,
-    borderRadius: 15,
-    shadowColor: "white",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 5 },
-    shadowRadius: 10,
-  },
-  alignLeft: {
-    alignSelf: "flex-start",
-    marginLeft: "5%",
-  },
-  alignRight: {
-    alignSelf: "flex-end",
-    marginRight: "5%",
-  },
-  timelineYear: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#5da9e9",
-  },
-  timelineEvent: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "white",
-    marginVertical: 5,
-  },
-  timelineDescription: {
-    fontSize: 16,
-    color: "#CCC",
+    height: "70%",
+    resizeMode: "contain",
   },
 });

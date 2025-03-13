@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Animated, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function HomeScreen() {
   const router = useRouter();
-  const fadeAnim = useState(new Animated.Value(0))[0]; // Animation d'apparition du texte
+  const fadeAnim = useState(new Animated.Value(0))[0];
   const projectsCount = useState(new Animated.Value(0))[0];
   const clientsCount = useState(new Animated.Value(0))[0];
+  const translateX = useState(new Animated.Value(500))[0]; // ✅ Déclaration correcte de translateX
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -28,6 +30,22 @@ export default function HomeScreen() {
       duration: 3000,
       useNativeDriver: false,
     }).start();
+
+    // ✅ Animation continue de la bande défilante
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(translateX, {
+          toValue: -500,
+          duration: 6000,
+          useNativeDriver: true,
+        }),
+        Animated.timing(translateX, {
+          toValue: 500,
+          duration: 0, // ✅ Remet immédiatement l'animation au début
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
   }, []);
 
   return (
@@ -57,6 +75,18 @@ export default function HomeScreen() {
             </Text>
           </View>
 
+          {/* ✅ Bande défilante d'icônes */}
+          <View style={styles.marqueeContainer}>
+            <Animated.View style={[styles.marquee, { transform: [{ translateX }] }]}>
+              <Ionicons name="globe-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
+              <Ionicons name="phone-portrait-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
+              <Ionicons name="cloud-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
+              <Ionicons name="shield-checkmark-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
+              <Ionicons name="construct-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
+              <Ionicons name="rocket-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
+            </Animated.View>
+          </View>
+
           {/* Section Compteur Dynamique */}
           <View style={styles.counterContainer}>
             <Text style={styles.sectionTitle}>Nos Réalisations</Text>
@@ -82,7 +112,7 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          {/* Section Avis Clients */}
+          {/* ✅ Section Avis Clients */}
           <View style={styles.testimonialsContainer}>
             <Text style={styles.sectionTitle}>Nos Clients Témoignent</Text>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.testimonialsScroll}>
@@ -103,12 +133,12 @@ export default function HomeScreen() {
               </View>
             </ScrollView>
           </View>
+
         </View>
       </ScrollView>
     </LinearGradient>
   );
 }
-
 const styles = StyleSheet.create({
   gradientContainer: {
     flex: 1,
@@ -149,7 +179,35 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontWeight: "bold",
   },
-  // Présentation
+  // ✅ Ajout de sectionTitle pour éviter l'erreur
+  sectionTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#5da9e9",
+    textAlign: "center",
+    marginBottom: 15,
+  },
+  // ✅ Bande défilante animée
+  marqueeContainer: {
+    width: "100%",
+    overflow: "hidden",
+    paddingVertical: 15,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+  },
+  marquee: {
+    flexDirection: "row",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-around",
+    paddingHorizontal: 20, // ✅ Ajout d'un espacement pour remplir la largeur
+  },
+  marqueeIcon: {
+    fontSize: 36, // ✅ Augmentation de la taille des icônes pour un meilleur impact visuel
+  },
+  // ✅ Présentation de l'entreprise
   presentationContainer: {
     marginTop: 50,
     padding: 20,
@@ -171,15 +229,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     lineHeight: 24,
   },
-  // Services
-  sectionTitle: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#5da9e9",
-    textAlign: "center",
-    marginBottom: 15,
-  },
-  // Compteur Dynamique
+  // ✅ Compteur Dynamique
   counterContainer: {
     marginTop: 50,
     alignItems: "center",
@@ -207,7 +257,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#CCC",
   },
-  // Avis Clients
+  // ✅ Avis Clients
   testimonialsContainer: {
     marginTop: 50,
     alignItems: "center",
@@ -241,3 +291,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
+
+
