@@ -39,7 +39,7 @@ export default function HomeScreen() {
           <Text style={styles.subtitle}>Innovation & Digital Solutions</Text>
 
           {/* Bouton Explorer */}
-          <TouchableOpacity style={styles.button} onPress={() => router.push("/explore")}>
+          <TouchableOpacity style={styles.button} onPress={() => router.push("/services")}>
             <Text style={styles.buttonText}>Explorer</Text>
           </TouchableOpacity>
 
@@ -55,31 +55,6 @@ export default function HomeScreen() {
               De la création de sites web à l'intégration d'applications complexes, nous offrons
               des services adaptés aux besoins des entreprises modernes.
             </Text>
-          </View>
-
-          {/* Section Nos Services */}
-          <View style={styles.servicesContainer}>
-            <Text style={styles.sectionTitle}>Nos Services</Text>
-            <View style={styles.serviceRow}>
-              <View style={styles.serviceItem}>
-                <Text style={styles.serviceIcon}>💻</Text>
-                <Text style={styles.serviceTitle}>Développement Web</Text>
-              </View>
-              <View style={styles.serviceItem}>
-                <Text style={styles.serviceIcon}>📱</Text>
-                <Text style={styles.serviceTitle}>Apps Mobiles</Text>
-              </View>
-            </View>
-            <View style={styles.serviceRow}>
-              <View style={styles.serviceItem}>
-                <Text style={styles.serviceIcon}>☁️</Text>
-                <Text style={styles.serviceTitle}>Solutions Cloud</Text>
-              </View>
-              <View style={styles.serviceItem}>
-                <Text style={styles.serviceIcon}>🤖</Text>
-                <Text style={styles.serviceTitle}>Intelligence Artificielle</Text>
-              </View>
-            </View>
           </View>
 
           {/* Section Compteur Dynamique */}
@@ -106,6 +81,28 @@ export default function HomeScreen() {
               </View>
             </View>
           </View>
+
+          {/* Section Avis Clients */}
+          <View style={styles.testimonialsContainer}>
+            <Text style={styles.sectionTitle}>Nos Clients Témoignent</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.testimonialsScroll}>
+              <View style={styles.testimonialCard}>
+                <Text style={styles.testimonialAvatar}>👩‍💻</Text>
+                <Text style={styles.testimonialName}>Alice Dupont</Text>
+                <Text style={styles.testimonialReview}>"Une équipe incroyable qui a su transformer notre vision en réalité !"</Text>
+              </View>
+              <View style={styles.testimonialCard}>
+                <Text style={styles.testimonialAvatar}>👨‍💼</Text>
+                <Text style={styles.testimonialName}>Jean Martin</Text>
+                <Text style={styles.testimonialReview}>"Un service rapide et efficace. Je recommande à 100% !"</Text>
+              </View>
+              <View style={styles.testimonialCard}>
+                <Text style={styles.testimonialAvatar}>👩‍🎨</Text>
+                <Text style={styles.testimonialName}>Sophie Leclerc</Text>
+                <Text style={styles.testimonialReview}>"Une collaboration enrichissante et un site magnifique."</Text>
+              </View>
+            </ScrollView>
+          </View>
         </View>
       </ScrollView>
     </LinearGradient>
@@ -118,7 +115,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     alignItems: "center",
-    paddingVertical: 20,
+    paddingVertical: 40, // ✅ Ajout d'espace en haut
   },
   container: {
     width: "100%",
@@ -131,6 +128,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontFamily: "Lobster",
     marginBottom: 10,
+    marginTop: 40, // ✅ Ajout d’espace en haut du titre
     textAlign: "center",
   },
   subtitle: {
@@ -174,40 +172,12 @@ const styles = StyleSheet.create({
     lineHeight: 24,
   },
   // Services
-  servicesContainer: {
-    marginTop: 50,
-    padding: 20,
-    borderRadius: 10,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    width: "90%",
-    alignItems: "center",
-  },
   sectionTitle: {
     fontSize: 28,
     fontWeight: "bold",
     color: "#5da9e9",
     textAlign: "center",
     marginBottom: 15,
-  },
-  serviceRow: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%",
-    marginVertical: 10,
-  },
-  serviceItem: {
-    flex: 1,
-    alignItems: "center",
-    padding: 10,
-  },
-  serviceIcon: {
-    fontSize: 40,
-    marginBottom: 5,
-  },
-  serviceTitle: {
-    fontSize: 16,
-    color: "#FFF",
-    textAlign: "center",
   },
   // Compteur Dynamique
   counterContainer: {
@@ -236,5 +206,38 @@ const styles = StyleSheet.create({
   counterText: {
     fontSize: 16,
     color: "#CCC",
+  },
+  // Avis Clients
+  testimonialsContainer: {
+    marginTop: 50,
+    alignItems: "center",
+    paddingVertical: 20,
+    width: "90%",
+  },
+  testimonialsScroll: {
+    flexDirection: "row",
+    gap: 15,
+  },
+  testimonialCard: {
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    padding: 20,
+    borderRadius: 10,
+    width: 250,
+    alignItems: "center",
+  },
+  testimonialAvatar: {
+    fontSize: 40,
+    marginBottom: 5,
+  },
+  testimonialName: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#FFF",
+    marginBottom: 5,
+  },
+  testimonialReview: {
+    fontSize: 16,
+    color: "#CCC",
+    textAlign: "center",
   },
 });

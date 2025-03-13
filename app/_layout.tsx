@@ -24,21 +24,22 @@ export default function RootLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="services"
         options={{
-          title: "Explorer",
+          title: "Services",
           tabBarIcon: ({ color, size }) => <Ionicons name="search-outline" size={size} color={color} />,
           headerShown: false,
         }}
       />
       <Tabs.Screen
-        name="dashboard"
+        name="parcours"
         options={{
-          title: "Dashboard",
-          tabBarIcon: ({ color, size }) => <Ionicons name="bar-chart-outline" size={size} color={color} />,
+          title: "Parcours",
+          tabBarIcon: ({ color, size }) => <Ionicons name="folder-open-outline" size={size} color={color} />,
           headerShown: false,
         }}
       />
+      
       <Tabs.Screen
         name="contact"
         options={{

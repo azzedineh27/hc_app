@@ -90,11 +90,6 @@ export default function ExploreScreen() {
               />
             </View>
           </View>
-
-          {/* Bouton Retour */}
-          <TouchableOpacity style={styles.button} onPress={() => router.back()}>
-            <Text style={styles.buttonText}>Retour</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
     </LinearGradient>
@@ -107,6 +102,7 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,
+    paddingTop: 50, // ✅ Ajout d'un espace global en haut
   },
   container: {
     flex: 1,
@@ -118,6 +114,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#5da9e9",
     marginBottom: 10,
+    marginTop: 40, // ✅ Ajout d’un espace sous la navbar
     textAlign: "center",
   },
   subtitle: {
@@ -218,19 +215,5 @@ const styles = StyleSheet.create({
   timelineDescription: {
     fontSize: 16,
     color: "#CCC",
-  },
-  // Bouton Retour
-  button: {
-    backgroundColor: "#007acc",
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 25,
-    elevation: 5,
-    marginTop: 20,
-  },
-  buttonText: {
-    fontSize: 18,
-    color: "#FFF",
-    fontWeight: "bold",
   },
 });
