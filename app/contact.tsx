@@ -1,94 +1,51 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Linking } from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Linking } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function ContactScreen() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [tel, setTel] = useState("");
-  const [message, setMessage] = useState("");
+  const handleEmailContact = () => {
+    const subject = "Demande de contact - Projet BuildCorp";
+    const body = `Bonjour,%0D%0A%0D%0AJe souhaite discuter de mon projet avec vous.%0D%0A%0D%0AMerci de me recontacter.%0D%0A%0D%0ACordialement.`;
+    const mailtoURL = `mailto:contact@buildcorp.com?subject=${encodeURIComponent(subject)}&body=${body}`;
 
-  const validateEmail = (email: string): boolean => {
-    return /\S+@\S+\.\S+/.test(email);
-  };
-
-  const validatePhone = (tel: string): boolean => {
-    return /^\d{10}$/.test(tel);
-  };
-
-  const handleSend = () => {
-    if (!name || !email || !tel || !message) {
-      Alert.alert("Erreur", "Veuillez remplir tous les champs.");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      Alert.alert("Erreur", "Veuillez entrer un email valide.");
-      return;
-    }
-
-    if (!validatePhone(tel)) {
-      Alert.alert("Erreur", "Veuillez entrer un numéro de téléphone valide (10 chiffres).");
-      return;
-    }
-
-    Alert.alert("Message Envoyé", "Merci de nous avoir contactés, nous vous répondrons bientôt !");
-
-    // Réinitialiser le formulaire
-    setName("");
-    setEmail("");
-    setTel("");
-    setMessage("");
+    Linking.openURL(mailtoURL).catch(() => alert("Impossible d'ouvrir l'application e-mail."));
   };
 
   return (
     <LinearGradient colors={["#0a192f", "#000"]} style={styles.container}>
-      <Text style={styles.title}>Contactez-nous</Text>
-      <Text style={styles.subtitle}>Nous sommes à votre écoute !</Text>
+      <Text style={styles.title}>Discutons de votre projet</Text>
+      <Text style={styles.subtitle}>
+        Expliquez-nous brièvement votre projet et contactez-nous pour en discuter.
+      </Text>
 
-      <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="Votre Nom"
-          placeholderTextColor="#ccc"
-          value={name}
-          onChangeText={setName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Votre Email"
-          placeholderTextColor="#ccc"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Votre Téléphone"
-          placeholderTextColor="#ccc"
-          keyboardType="phone-pad"
-          value={tel}
-          onChangeText={setTel}
-        />
-        <TextInput
-          style={[styles.input, styles.textArea]}
-          placeholder="Votre Message"
-          placeholderTextColor="#ccc"
-          multiline
-          numberOfLines={4}
-          value={message}
-          onChangeText={setMessage}
-        />
+      {/* ✅ Section Pourquoi Nous Contacter ? */}
+      <View style={styles.whyContactContainer}>
+        <Text style={styles.sectionTitle}>Pourquoi nous contacter ?</Text>
+        <Text style={styles.whyText}>✅ Besoin d’un devis personnalisé</Text>
+        <Text style={styles.whyText}>✅ Vous avez un projet digital en tête ?</Text>
+        <Text style={styles.whyText}>✅ Conseils sur la meilleure solution pour votre entreprise</Text>
+        <Text style={styles.whyText}>✅ Collaboration et partenariats</Text>
+      </View>
 
-        <TouchableOpacity style={styles.button} onPress={handleSend}>
-          <Text style={styles.buttonText}>Envoyer</Text>
-        </TouchableOpacity>
+      {/* ✅ Bouton de Contact MailTo */}
+      <TouchableOpacity style={styles.button} onPress={handleEmailContact}>
+        <Text style={styles.buttonText}>📧 Nous Contacter</Text>
+      </TouchableOpacity>
 
-        {/* Bouton Appeler Maintenant */}
-        <TouchableOpacity style={styles.callButton} onPress={() => Linking.openURL("tel:+33749082057")}>
-          <Text style={styles.buttonText}>📞 Appeler Maintenant</Text>
-        </TouchableOpacity>
-
+      {/* ✅ Section Nos Réseaux Sociaux */}
+      <View style={styles.socialContainer}>
+        <Text style={styles.sectionTitle}>Suivez-nous</Text>
+        <View style={styles.socialIcons}>
+          <TouchableOpacity onPress={() => Linking.openURL("https://www.linkedin.com/company/buildcorp")}>
+            <Text style={styles.socialIcon}>🔗 LinkedIn</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL("https://www.twitter.com/buildcorp")}>
+            <Text style={styles.socialIcon}>🐦 Twitter</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => Linking.openURL("https://www.instagram.com/buildcorp")}>
+            <Text style={styles.socialIcon}>📸 Instagram</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </LinearGradient>
   );
@@ -113,43 +70,62 @@ const styles = StyleSheet.create({
     color: "#ccc",
     marginBottom: 20,
     textAlign: "center",
+    paddingHorizontal: 10,
   },
-  form: {
-    width: "100%",
-    maxWidth: 500,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
+  // ✅ Section Pourquoi Nous Contacter ?
+  whyContactContainer: {
+    marginTop: 30,
     padding: 20,
     borderRadius: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    alignItems: "center",
+    width: "90%",
   },
-  input: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    padding: 12,
-    borderRadius: 8,
-    color: "#fff",
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#5da9e9",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  whyText: {
     fontSize: 16,
-    marginBottom: 15,
+    color: "#FFF",
+    marginBottom: 5,
   },
-  textArea: {
-    height: 100,
-    textAlignVertical: "top",
-  },
+  // ✅ Bouton Contact
   button: {
     backgroundColor: "#007acc",
     paddingVertical: 15,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 10,
-  },
-  callButton: {
-    backgroundColor: "#06145b",
-    paddingVertical: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
+    marginTop: 20,
+    width: "90%",
   },
   buttonText: {
     fontSize: 18,
     color: "#fff",
+    fontWeight: "bold",
+  },
+  // ✅ Section Réseaux Sociaux
+  socialContainer: {
+    marginTop: 30,
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    alignItems: "center",
+    width: "90%",
+  },
+  socialIcons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+    marginTop: 10,
+  },
+  socialIcon: {
+    fontSize: 16,
+    color: "#5da9e9",
+    textDecorationLine: "underline",
     fontWeight: "bold",
   },
 });

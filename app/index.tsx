@@ -9,7 +9,7 @@ export default function HomeScreen() {
   const fadeAnim = useState(new Animated.Value(0))[0];
   const projectsCount = useState(new Animated.Value(0))[0];
   const clientsCount = useState(new Animated.Value(0))[0];
-  const translateX = useState(new Animated.Value(500))[0]; // ✅ Déclaration correcte de translateX
+  const translateX = useState(new Animated.Value(0))[0]; // ✅ Déplacement initial
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
@@ -31,22 +31,27 @@ export default function HomeScreen() {
       useNativeDriver: false,
     }).start();
 
-    // ✅ Animation continue de la bande défilante
+    // ✅ Animation infinie de la bande défilante
     Animated.loop(
-      Animated.sequence([
-        Animated.timing(translateX, {
-          toValue: -500,
-          duration: 6000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(translateX, {
-          toValue: 500,
-          duration: 0, // ✅ Remet immédiatement l'animation au début
-          useNativeDriver: true,
-        }),
-      ])
+      Animated.timing(translateX, {
+        toValue: -500,
+        duration: 8000,
+        useNativeDriver: true,
+      })
     ).start();
   }, []);
+
+  // ✅ Liste des icônes dupliquées pour éviter un vide
+  const icons: Array<keyof typeof Ionicons.glyphMap> = [
+    "globe-outline",
+    "phone-portrait-outline",
+    "cloud-outline",
+    "shield-checkmark-outline",
+    "construct-outline",
+    "rocket-outline",
+  ];
+  
+
 
   return (
     <LinearGradient colors={["#0a192f", "#000"]} style={styles.gradientContainer}>
@@ -75,15 +80,12 @@ export default function HomeScreen() {
             </Text>
           </View>
 
-          {/* ✅ Bande défilante d'icônes */}
+          {/* ✅ Bande Défilante d'Icônes avec Répétition */}
           <View style={styles.marqueeContainer}>
             <Animated.View style={[styles.marquee, { transform: [{ translateX }] }]}>
-              <Ionicons name="globe-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
-              <Ionicons name="phone-portrait-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
-              <Ionicons name="cloud-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
-              <Ionicons name="shield-checkmark-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
-              <Ionicons name="construct-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
-              <Ionicons name="rocket-outline" size={32} color="#5da9e9" style={styles.marqueeIcon} />
+              {[...icons, ...icons, ...icons].map((icon, index) => (
+                <Ionicons key={index} name={icon} size={36} color="#5da9e9" style={styles.marqueeIcon} />
+              ))}
             </Animated.View>
           </View>
 
@@ -187,7 +189,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 15,
   },
-  // ✅ Bande défilante animée
+  // ✅ Bande Défilante Pleine Largeur avec Répétition
   marqueeContainer: {
     width: "100%",
     overflow: "hidden",
@@ -199,13 +201,14 @@ const styles = StyleSheet.create({
   },
   marquee: {
     flexDirection: "row",
-    width: "100%",
+    width: "300%", // ✅ Augmenté pour contenir plusieurs répétitions d'icônes
     alignItems: "center",
     justifyContent: "space-around",
-    paddingHorizontal: 20, // ✅ Ajout d'un espacement pour remplir la largeur
+    paddingHorizontal: 20,
   },
   marqueeIcon: {
     fontSize: 36, // ✅ Augmentation de la taille des icônes pour un meilleur impact visuel
+    marginHorizontal: 10,
   },
   // ✅ Présentation de l'entreprise
   presentationContainer: {
