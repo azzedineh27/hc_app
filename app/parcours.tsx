@@ -33,6 +33,11 @@ export default function ExploreScreen() {
       title: "Plateforme SaaS pour entreprises",
       description: "Solution cloud innovante pour la gestion des workflows professionnels.",
     },
+    {
+      image: require("../assets/images/etudeplus_project.png"),
+      title: "Plateforme de Formation pour Étude Plus",
+      description: "Développement d’un site web pour une association pour accompagner son nouveau centre de formation.",
+    },    
   ];
 
   // Afficher l'aperçu de l'image
@@ -52,7 +57,7 @@ export default function ExploreScreen() {
           {/* Titre animé */}
           <Animated.Text style={[styles.title, { opacity: fadeAnim }]}>Notre Parcours</Animated.Text>
           <Animated.Text style={[styles.subtitle, { opacity: fadeAnim }]}>
-            Découvrez quelques-uns de nos projets les plus emblématiques, réalisés avec expertise et passion.
+            Découvrez nos projets les plus emblématiques, réalisés avec expertise et passion.
           </Animated.Text>
 
           {/* Liste des projets */}

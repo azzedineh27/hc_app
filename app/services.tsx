@@ -1,14 +1,27 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, ScrollView, Animated } from "react-native"; // ✅ ajouté Animated
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
 export default function ServicesScreen() {
+  const fadeAnim = useState(new Animated.Value(0))[0];
+
+  useEffect(() => {
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 2000,
+      useNativeDriver: true,
+    }).start();
+  }, []);
+
   return (
     <LinearGradient colors={["#0a192f", "#000"]} style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.title}>Nos Services</Text>
-        <Text style={styles.subtitle}>Découvrez les solutions digitales que nous proposons.</Text>
+        {/* ✅ Animation titre + sous-titre */}
+        <Animated.Text style={[styles.title, { opacity: fadeAnim }]}>Nos Services</Animated.Text>
+        <Animated.Text style={[styles.subtitle, { opacity: fadeAnim }]}>
+          Découvrez les solutions digitales que nous proposons.
+        </Animated.Text>
 
         {/* Section des services */}
         <View style={styles.serviceCard}>
@@ -23,23 +36,23 @@ export default function ServicesScreen() {
           <Ionicons name="phone-portrait-outline" size={40} color="#5da9e9" style={styles.serviceIcon} />
           <Text style={styles.serviceTitle}>Développement Mobile</Text>
           <Text style={styles.serviceDescription}>
-            Applications mobiles natives et hybrides sur iOS et Android pour toucher plus d'utilisateurs.
+            Applications mobiles natives et adaptées sur iOS et Android pour toucher plus d'utilisateurs.
           </Text>
         </View>
 
         <View style={styles.serviceCard}>
-          <Ionicons name="cloud-outline" size={40} color="#5da9e9" style={styles.serviceIcon} />
-          <Text style={styles.serviceTitle}>Solutions Cloud</Text>
+          <Ionicons name="bar-chart-outline" size={40} color="#5da9e9" style={styles.serviceIcon} />
+          <Text style={styles.serviceTitle}>Analyse de Données & Outils Sur Mesure</Text>
           <Text style={styles.serviceDescription}>
-            Hébergement, sécurité et intégration de solutions cloud pour la scalabilité de votre entreprise.
+            Collecte, traitement et visualisation de vos données pour en tirer des dashboards stratégiques.
           </Text>
         </View>
 
         <View style={styles.serviceCard}>
-          <Ionicons name="analytics-outline" size={40} color="#5da9e9" style={styles.serviceIcon} />
-          <Text style={styles.serviceTitle}>Conseils en Analyse et Outils Numériques</Text>
+          <Ionicons name="help-circle-outline" size={40} color="#5da9e9" style={styles.serviceIcon} />
+          <Text style={styles.serviceTitle}>Support sur Nos Outils & Produits</Text>
           <Text style={styles.serviceDescription}>
-            Accompagnement dans l'analyse de données et l'utilisation des outils numériques pour optimiser votre activité.
+            Assistance technique, formation et accompagnement sur l’utilisation de nos solutions numériques internes.
           </Text>
         </View>
 
@@ -52,7 +65,7 @@ export default function ServicesScreen() {
           </View>
           <View style={styles.benefitItem}>
             <Ionicons name="checkmark-circle-outline" size={24} color="#5da9e9" />
-            <Text style={styles.benefitText}>Solutions sur mesure adaptées à votre business</Text>
+            <Text style={styles.benefitText}>Solutions adaptées à votre business</Text>
           </View>
           <View style={styles.benefitItem}>
             <Ionicons name="checkmark-circle-outline" size={24} color="#5da9e9" />
@@ -101,7 +114,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   title: {
-    fontSize: 32,
+    fontSize: 42,
     fontWeight: "bold",
     color: "#5da9e9",
     textAlign: "center",
@@ -109,10 +122,10 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: 20,
     color: "#CCC",
     textAlign: "center",
-    marginBottom: 20,
+    marginBottom: 30,
     paddingHorizontal: 20,
   },
   serviceCard: {
@@ -141,7 +154,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
     padding: 20,
     borderRadius: 10,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
     alignItems: "center",
   },
   sectionTitle: {
